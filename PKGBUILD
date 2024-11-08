@@ -1,11 +1,11 @@
 # Maintainer: Michael Engelhard <engelhard.michael+git@gmail.com>
 pkgname=neolight
-pkgver=1.2.1
+pkgver=1.3.0
 pkgrel=1
 pkgdesc='Additional layers for the german qwertz keyboard layout and others.'
 arch=('any')
 url='https://github.com/mihi314/neolight'
-license=('GPL')
+license=('GPL-3.0-or-later')
 depends=('xkeyboard-config')
 optdepends=('ibus: adds neolight to the ibus input methods')
 
@@ -13,15 +13,19 @@ _tag="v${pkgver}"
 _repo_url='https://raw.githubusercontent.com/mihi314/neolight'
 
 install='neolight.install'
-source=("${_repo_url}/${_tag}/linux/neolight"
-        "${_repo_url}/${_tag}/linux/register-neolight.sh"
+# TODO: maybe release a tarball instead of specifying individual files here
+source=("neolight_symbols-${pkgver}::${_repo_url}/${_tag}/linux/neolight_symbols"
+        "neolight_types-${pkgver}::${_repo_url}/${_tag}/linux/neolight_types"
+        "register-neolight.sh-${pkgver}::${_repo_url}/${_tag}/linux/register-neolight.sh"
         "register-neolight.hook")
-md5sums=('998bc1bf9b16a04a0ac0ed2a82221118'
-         '450e3c6aa9c0fe9b2f9048bde5ce438a'
+md5sums=('0d6b93739f3f60b1729bfebf5152c67b'
+         'ba64578baee9718f00f989cf8025ea0a'
+         '8efb310e11a41762fc609f7750d37793'
          'c6e81d0589bab55863b25cbffbaebf09')
 
 package() {
-    install -Dm 644 "${srcdir}/neolight" "${pkgdir}/usr/share/X11/xkb/symbols/neolight"
-    install -Dm 755 "${srcdir}/register-neolight.sh" "${pkgdir}/usr/share/libalpm/scripts/register-neolight.sh"
+    install -Dm 644 "${srcdir}/neolight_symbols-${pkgver}" "${pkgdir}/usr/share/X11/xkb/symbols/neolight"
+    install -Dm 644 "${srcdir}/neolight_types-${pkgver}" "${pkgdir}/usr/share/X11/xkb/types/neolight"
+    install -Dm 755 "${srcdir}/register-neolight.sh-${pkgver}" "${pkgdir}/usr/share/libalpm/scripts/register-neolight.sh"
     install -Dm 644 "${srcdir}/register-neolight.hook" "${pkgdir}/usr/share/libalpm/hooks/register-neolight.hook"
 }
